@@ -1,0 +1,487 @@
+<script src="/jqplot/1.0.8/jquery.jqplot.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.highlighter.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<link href="/jqplot/1.0.8/jquery.jqplot.min.css" rel="stylesheet">
+
+<style>
+	#history th,
+	#history td {
+		text-align: right;
+		height: 30px;
+	}
+	
+	#basic th,
+	#basic td {
+		/*text-align: right;*/
+		height: 30px;
+	}
+
+</style>
+
+<script type="text/javascript">
+	var dd1 = [
+		[]
+	];
+	var dd2 = [
+		[],
+		[]
+	];
+	var dd3 = [
+		[],
+		[]
+	];
+
+	function updChart(chart) {
+
+		var max = $("#max").val();
+		var char1data = new Array();
+		char1data = chart.split(",");
+
+		console.log(char1data);
+
+		if (dd1[0].length < max) { //保留最近10条历史
+			dd1[0].push([char1data[0], parseFloat(char1data[1])]);
+		} else {
+			dd1[0].shift();
+			dd1[0].push([char1data[0], parseFloat(char1data[1])]);
+		}
+
+		//----------------------------
+
+		if (dd2[0].length < max) { //保留最近10条历史
+			dd2[0].push([char1data[0], parseFloat(char1data[2])]);
+		} else {
+			dd2[0].shift();
+			dd2[0].push([char1data[0], parseFloat(char1data[2])]);
+		}
+
+		if (dd2[1].length < max) { //保留最近10条历史
+			dd2[1].push([char1data[0], parseFloat(char1data[3])]);
+		} else {
+			dd2[1].shift();
+			dd2[1].push([char1data[0], parseFloat(char1data[3])]);
+		}
+
+		//==========================dd3
+
+		if (dd3[0].length < max) { //保留最近10条历史
+			dd3[0].push([char1data[0], parseFloat(char1data[4])]);
+		} else {
+			dd3[0].shift();
+			dd3[0].push([char1data[0], parseFloat(char1data[4])]);
+		}
+
+		if (dd3[1].length < max) { //保留最近10条历史
+			dd3[1].push([char1data[0], parseFloat(char1data[5])]);
+		} else {
+			dd3[1].shift();
+			dd3[1].push([char1data[0], parseFloat(char1data[5])]);
+		}
+
+		//        ===========================================================================
+
+
+		//        ===========================================================================
+		jQuery.noConflict();
+		var plot1 = $.jqplot('chart1', dd1, {
+			title: 'Commands/sec',
+			axes: {
+				xaxis: {
+					renderer: $.jqplot.DateAxisRenderer,
+					tickOptions: {
+						formatString: '%H:%M:%S'
+					}
+				}
+			},
+			highlighter: {
+				show: true
+			},
+			series: [{
+				fill: false
+			}],
+			series: [{
+				label: 'cmd/s'
+			}],
+			legend: {
+				show: true,
+				//                placement: 'inside'
+				location: 'nw'
+			}
+		});
+
+		var plot2 = $.jqplot('chart2', dd2, {
+			stackSeries: true,
+			showMarker: false,
+			seriesDefaults: {
+				fill: true
+			},
+			highlighter: {
+				show: true
+			},
+			title: 'CPU usage',
+			axes: {
+				xaxis: {
+					renderer: $.jqplot.DateAxisRenderer,
+					tickOptions: {
+						formatString: '%H:%M:%S'
+					}
+				}
+			},
+			series: [{
+				label: 'us'
+			}, {
+				label: 'sys'
+			}],
+			legend: {
+				show: true,
+				//                placement: 'inside'
+				location: 'nw'
+			}
+		});
+
+		var plot3 = $.jqplot('chart3', dd3, {
+			//            stackSeries: false,
+			//            showMarker: false,
+			//            seriesDefaults: {
+			//                fill: true
+			//            },
+			highlighter: {
+				show: true
+			},
+			title: 'Memory usage',
+			axes: {
+				xaxis: {
+					renderer: $.jqplot.DateAxisRenderer,
+					tickOptions: {
+						formatString: '%H:%M:%S'
+					}
+				}
+			},
+			series: [{
+				label: 'mem'
+			}, {
+				label: 'rss'
+			}],
+			legend: {
+				show: true,
+				//                placement: 'inside'
+				location: 'nw'
+			}
+		});
+
+		plot1.replot();
+		plot2.replot();
+		plot3.replot();
+
+	}
+
+</script>
+
+<script type="text/javascript">
+	function resetPlot() {
+
+		console.log("reset");
+
+		$("#history").children("tbody").children("tr").remove();
+
+		dd1 = [
+			[]
+		];
+		$("#chart1").empty();
+		dd2 = [
+			[],
+			[]
+		];
+		$("#chart2").empty();
+		dd3 = [
+			[],
+			[]
+		];
+		$("#chart3").empty();
+
+		$("#id_url").html("127.0.0.1:6379");
+		$("#id_redis_version").html("/");
+		$("#id_process_id").html("/");
+		$("#id_uptime_in_secends").html("/");
+		$("#id_uptime_in_days").html("/");
+		$("#id_gcc_version").html("/");
+		$("#id_role").html("/");
+		$("#id_connected_slaves").html("/");
+		$("#id_aof_enabled").html("/");
+		$("#id_vm_enabled").html("/");
+
+	}
+
+	function updHistory(row, max) {
+
+		if ($("#info").children("tr").length == 0) {
+			$("#info").append(row);
+			$("#info").children("tr:first-child").css("textDecoration", "underline").css("font-weight", "bolder").addClass("success");
+		} else if ($("#info").children("tr").length < max) {
+			$("#info").children("tr:first-child").css("textDecoration", "").css("font-weight", "").removeClass("success");
+			$("#info").children("tr:first-child").before(row);
+			$("#info").children("tr:first-child").css("textDecoration", "underline").css("font-weight", "bolder").addClass("success");
+		} else if ($("#info").children("tr").length == max) {
+			$("#info").children("tr:first-child").css("textDecoration", "").css("font-weight", "").removeClass("success");
+			$("#info").children("tr:last-child").remove();
+			$("#info").children("tr:first-child").before(row);
+			$("#info").children("tr:first-child").css("textDecoration", "underline").css("font-weight", "bolder").addClass("success");
+		}
+	}
+
+	function updInfo(inf) {
+
+		var info = new Array();
+		info = inf.split(",");
+
+		console.log(info);
+
+		$("#id_url").html(info[0]);
+		$("#id_redis_version").html(info[1]);
+		$("#id_process_id").html(info[2]);
+		$("#id_uptime_in_secends").html(info[3]);
+		$("#id_uptime_in_days").html(info[4]);
+		$("#id_gcc_version").html(info[5]);
+		$("#id_role").html(info[6]);
+		$("#id_connected_slaves").html(info[7]);
+		$("#id_aof_enabled").html(info[8]);
+		$("#id_vm_enabled").html(info[9]);
+	}
+
+</script>
+
+<script type="text/javascript">
+	var sock = null;
+
+	function startMon() {
+
+		resetPlot();
+
+		var max = $("#max").val();
+
+		var wsurl = "ws://" + window.location.host + "/stat/ws?" + "url=" + $("#url").val() + "&" + "interval=" + $("#interval").val() + "&" + "max=" + $("#max").val();
+
+		console.log("ws          :" + wsurl);
+
+		console.log("====================================================以下为程序输出====================================================");
+		console.log(" ");
+
+		try {
+			sock = new WebSocket(wsurl);
+		} catch (e) {
+			alert(e.Message);
+		}
+
+		sock.onopen = function() {
+			console.log("connected to " + wsurl);
+		}
+
+		sock.onerror = function(e) {
+			console.log("err from connect " + e);
+		}
+
+		sock.onclose = function(e) {
+			console.log("connection closed (" + e.code + ")");
+		}
+
+		sock.onmessage = function(e) {
+			console.log("message received: " + e.data);
+			var data = eval('(' + e.data + ')');
+			if (data.type == "output") {
+				updHistory(data.msg, max);
+				updInfo(data.inf);
+				updChart(data.chart);
+				sock.send("alive");
+			} else if (data.type == "error") {
+				console.log("error received: " + data.msg);
+			}
+		}
+	}
+
+	function suspendMon() {
+		sock.send("stop");
+	}
+
+</script>
+
+<script type="text/javascript">
+	function abc() {
+		$.ajax({
+			type: "GET",
+			data: "",
+			dataType: "json",
+			url: "/api/stat",
+			success: function(msg) {
+				alert(msg.URL);
+			},
+			error: function() {
+				alert("err");
+			}
+		});
+	}
+
+</script>
+
+<div class="container" style="margin-top: 40px;">
+
+	<form class="form-horizontal" role="form">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="text-align: right">Redis实例</label>
+			<div class="col-sm-9">
+
+				<select id="url" name="url" class="selectpicker show-tick form-control" data-size="8">
+					{{range $i,$v := .redis_urls}}
+					<option value="{{$v}}">{{$v}}</option>
+					{{end}}
+				</select>
+
+			</div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-sm-2 control-label" style="text-align: right;">监控间隔</label>
+			<div class="col-sm-9">
+
+				<select id="interval" name="interval" class="selectpicker show-tick form-control" data-size="5">
+					<option value="2">2秒</option>
+					<option value="5">5秒</option>
+					<option value="10">10秒</option>
+				</select>
+
+			</div>
+
+		</div>
+
+		<div class="form-group">
+
+			<label class="col-sm-2 control-label" style="text-align: right">历史条目</label>
+			<div class="col-sm-9">
+
+				<select id="max" name="max" class="selectpicker show-tick form-control" data-size="5">
+					<option value="10">10</option>
+					<option value="20">20</option>
+					<option value="25">25</option>
+				</select>
+
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="text-align: right"><em></em></label>
+			<div class="col-sm-4">
+
+				<span>
+                    <button type="submit" class="btn btn-success" onclick="startMon();return false;" >   启动监控</button>
+                </span>
+
+				<span>
+                    <button type="submit" class="btn btn-success" onclick="suspendMon();return false;" >   暂停监控</button>
+                </span>
+
+				<!--<span>-->
+				<!--<button type="submit" class="btn btn-success" onclick="resetPlot();return false;" >   reset</button>-->
+				<!--</span>-->
+
+				<!--<span>-->
+				<!--<button type="submit" class="btn btn-success" onclick="abc();return false;" >   api test</button>-->
+				<!--</span>-->
+
+			</div>
+		</div>
+
+		<div class="col-sm-12">
+			<hr width="100%" color=#987cb9 size=3>
+		</div>
+
+	</form>
+
+	<!--===============================================================分割线===============================================================-->
+
+	<div class="row">
+		<div class="col-md-12">
+			<div>
+				<h4><em>Dashboard</em></h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<div id="chart1"></div>
+		</div>
+		<div class="col-md-4">
+			<div id="chart2"></div>
+		</div>
+		<div class="col-md-4">
+			<div id="chart3"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div id="chart4"></div>
+		</div>
+		<div class="col-md-4">
+			<div id="chart5"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-10">
+			<div>
+				<h4><em>History</em></h4>
+			</div>
+
+			<div>
+				<table id="history" class="table table-hover table-bordered table-striped">
+					<thead>
+						<tr class="info">
+							{{range .head}}
+							<th>{{.}}</th>
+							{{end}}
+						</tr>
+					</thead>
+
+					<tbody id="info">
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+
+		<div class="col-md-2">
+			<div>
+				<h4><em>Instance information</em></h4>
+			</div>
+
+			<div>
+				<table id="basic" class="table table-hover table-bordered" style="width: 40px">
+					<thead>
+						<tr class="info">
+							<th>&nbsp;</th>
+							<th id="id_url"><em>{{.url}}</em></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{{range .info}}
+						<tr>
+							<td><strong><em>{{.Key}}</em></strong></td>
+							<td id="id_{{.Key}}">{{.Val}}</td>
+						</tr>
+						{{end}}
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+</div>

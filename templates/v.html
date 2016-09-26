@@ -1,0 +1,115 @@
+<script type="text/javascript">
+	function checkInput() {
+		var fpdm = document.getElementById('fpdm')
+		var fphm = document.getElementById('fphm')
+		var kprq = document.getElementById('kprq')
+
+		if (dsn.value.length == 0) {
+			document.getElementById('warn').style.display = 'block';
+			document.getElementById('alert').innerHTML = "您没有输入数据库连接信息，请输入正确的数据库连接信息。";
+			document.getElementById('alert').style.display = 'block';
+			return false
+		}
+		if (qry.value.length == 0) {
+			document.getElementById('warn').style.display = 'block';
+			document.getElementById('alert').innerHTML = "您没有输入用于导出的SQL语句，请输入正确的SQL语句。";
+			document.getElementById('alert').style.display = 'block';
+			return false
+		}
+		if (dir.value.length == 0) {
+			document.getElementById('warn').style.display = 'block';
+			document.getElementById('alert').innerHTML = "您没有输入导出目录信息，请指定正确的导出目录。";
+			document.getElementById('alert').style.display = 'block';
+			return false
+		}
+		return true
+	}
+
+</script>
+
+
+<div class="container">
+	<form id="formname" class="form-horizontal" role="form" method="POST" action="/res">
+
+		<div class="form-group">
+			<label id="warn" class="col-sm-2 control-label" style="display: none;"> &nbsp;</label>
+			<div class="col-sm-5">
+				<div id="alert" class="alert alert-danger" role="alert" style="display: none; width: 100%;"></div>
+				<!---->
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">发票类型</label>
+			<div class="col-sm-10">
+				<label class="checkbox-inline">
+					<input type="radio" name="fplx01" id="fplx01" value="01" onclick="checkInput();"> 增值税专用发票
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="fplx01" id="fplx03" value="02" onclick="checkInput();"> 货物运输发票&nbsp;
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="fplx01" id="fplx03" value="03" onclick="checkInput();"> 机动车发票
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="fplx01" id="fplx04" value="04" onclick="checkInput();"> 增值税普通发票
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">发票代码</label>
+			<div class="col-sm-5">
+				<input id="fpdm" name="fpdm" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">发票号码</label>
+			<div class="col-sm-5">
+				<input id="fphm" name="fphm" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">开票日期</label>
+			<div class="col-sm-5">
+				<input id="kprq" name="kprq" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">开票金额</label>
+			<div class="col-sm-5">
+				<input id="kpje" name="kpje" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">销方识别号</label>
+			<div class="col-sm-5">
+				<input id="xfsbh" name="xfsbh" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">校验码</label>
+			<div class="col-sm-5">
+				<input id="jym" name="jym" type="text" class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">验证码</label>
+			<div class="col-sm-5">
+				<div class="input-group">
+					<input id="capcha" name="capcha" type="text" class="form-control">
+					<span class="input-group-btn">
+                <button type="submit" class="btn btn-primary" onclick="return checkInput();" >   查验</button>
+              </span>
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>

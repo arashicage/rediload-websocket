@@ -1,0 +1,84 @@
+    <div class="container" style="margin-top: 40px;">
+
+      <div class="bs-example" data-example-id="contextual-table">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>名称</th>
+              <th>说明与约束</th>
+              <th>示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>What</td>
+              <td>指定要加载的是发票信息还是货物信息</td>
+              <td>01 发票信息 <br>02 货物信息</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>URL</td>
+              <td>指定redis 连接地址</td>
+              <td>127.0.0.1:6379</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Core</td>
+              <td>指定计划用多少核心来运行加载，正整数</td>
+              <td>24</td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>Worker</td>
+              <td>指定计划用开启多少routine，正整数</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <td>Uid</td>
+              <td>连接Oracle 的信息</td>
+              <td>dzdz/oracle@dzdz_dev_11200</td>
+            </tr>
+            <tr>
+              <th scope="row">6</th>
+              <td>SQL</td>
+              <td>指定用于提取记录的SQL语句,不需要末尾的分号(;)</td>
+              <td>发票信息:<br>select /*+ parallel(t,8) */ '01:'||fpdm||fphm key,kprq, skm, gfmc, gfsbh, gfdzdh, gfyhzh, xfmc, xfsbh, xfdzdh, xfyhzh, je, se, jshj, bz, skr, fhr, kpr, jqbh, kpjh,trunc((sysdate-kprq)*1440*60) expire from dzdz_fpxx_zzsfp
+              <br>货物信息:<br>select /*+ parallel(t,8) */ '01:'||t.fpdm||t.fphm key,'h'||t.id,t.hwmc||'~~'||t.ggxh||'~~'||t.dw||'~~'||t.sl||'~~'||t.dj||'~~'||t.je||'~~'||t.slv||'~~'||t.se from dzdz_hwxx_zzsfp t where t.id<=7 order by fpdm,fphm,id</td>
+            </tr>
+            <tr>
+              <th scope="row">7</th>
+              <td>Fields</td>
+              <td>sql 中字段名和redis hash field 的对应关系</td>
+              <td>key,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,expire</td>
+            </tr>
+            <tr>
+              <th scope="row">8</th>
+              <td>Batch</td>
+              <td>指定多少记录进行一次批量加载，正整数</td>
+              <td>100000</td>
+            </tr>
+            <tr>
+              <th scope="row">9</th>
+              <td>CodePage</td>
+              <td>指定加载到redis 是中文的字符集</td>
+              <td>gbk 或 utf8</td>
+            </tr>
+            <tr>
+              <th scope="row">10</th>
+              <td>Log</td>
+              <td>日志文件名</td>
+              <td>不需要提供</td>
+            </tr>
+            <tr>
+              <td colspan="4">Java 发出类似如下的GET请求进行调用<br> http://127.0.0.1:8080/loadredis?what=01&url=111&core=222&worker=333&batch=444&sql=555&fields=666&codepage=utf8</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    

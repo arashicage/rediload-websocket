@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>查验结果</title>
+<meta name="keywords" content="">
+<meta property="wb:webmaster" content="" />
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/jquery-foucs.js"></script><!--banner js-->
+
+</head>
+
+<body>
+<div id="headerbox"><div id="header">
+  <div class="logo"><a href="index.html"><img src="images/logo.png" /></a></div>
+  <div class="tel">
+    
+    <span style="color:#fff; font-size:14px;"><i>24小时咨询热线：<span style="color:#db483a;">400-811-2366</span></i></span> </div>
+</div>
+<div id="navbox">
+    <div id="nav">
+      <ul class="nav_main">
+        <li class="nav_ge"></li>
+        <li> <a href="index.html" class="" style="width:100px;">首页</a> </li>
+        <li class="nav_ge"></li>
+        <li> <a href="news_list.html" class="hasSub ">最新动态</a>
+          <ul>
+            <li><a href='news_list.html' >新闻报道</a></li>
+            <li><a href='news_list.html' >通知公告</a></li>
+            <li><a href='news_list.html' >政策法规</a></li>
+          </ul>
+        </li>
+        <li class="nav_ge"></li>
+        <li> <a href="#" class="hasSub ">发票常识</a>
+          <ul>
+            <li><a href='#' >发票种类</a></li>
+            <li><a href='#' >发票版式</a></li>
+            <li><a href='#' >防伪措施</a></li>
+            <li><a href='#' >电子发票</a></li>
+          </ul>
+        </li>
+        <li class="nav_ge"></li>
+        <li> <a href="#" class="hasSub ">常见问题</a>
+          <ul>
+            <li><a href='#' >发票查验</a></li>
+            <li><a href='#' >结果说明</a></li>
+            <li><a href='#' >违法举报</a></li>
+          </ul>
+        </li>
+        <li class="nav_ge"></li>
+        <li> <a href="#" class=" ">下载中心</a> </li>
+        <li class="nav_ge"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="content" class="clearfix">
+  <div class="contentLeft">
+    
+    <div class="clearfix"></div>
+    <div class="leftNav clearfix"> <a href="#" class="leftNav_1">增值税专用发票查验</a> <a href="#" class="leftNav_2">货运增值税专用发票查验</a> <a href="#" class="leftNav_3">增值税普通发票查验</a> <a href="#" class="leftNav_4">机动车销售统一发票查验</a> </div>
+    
+  </div>
+  <div class="cms_r" id="cms_r">
+    <div class="title">发票查验明细</div>
+    <div class="cms_r_main">
+      <div class="chayan_div">
+      
+        <table  border="1" class="comm_table" width="90%" style="margin:0 auto;">
+          <tr class="result_title">
+            <th colspan="4" ><span style="font-size:16px; color:#fff; float:left;">查验次数：第{{.cnt}}次</span>
+            <span style="float:right"><button>打印</button>
+            <button>导出</button></span>
+            </th>
+          </tr>
+          <tr>
+            <td width="15%" class="td_center">查验流水号</td>
+            <td width="35%" class="td_left">12345</td>
+            <td width="15%" class="td_center">发票状态</td>
+            <td width="35%" class="td_left">正常</td>
+          </tr>
+          <tr>
+            <td class="td_center">发票代码</td>
+            <td class="td_left">{{.fpdm}}</td>
+            <td class="td_center">发票号码</td>
+            <td class="td_left">{{.fphm}}</td>
+          </tr>
+          <tr>
+            <td class="td_center">开具单位</td>
+            <td class="td_left">{{.xfmc}}</td>
+            <td class="td_center">税号</td>
+            <td class="td_left">{{.xfsbh}}</td>
+          </tr>
+          <tr>
+            <td class="td_center">付款单位</td>
+            <td class="td_left">{{.gfmc}}</td>
+            <td class="td_center">税号</td>
+            <td class="td_left">{{.gfsbh}}</td>
+          </tr>
+          <tr>
+            <td class="td_center">开具日期</td>
+            <td class="td_left">{{.kprq}}</td>
+            <td class="td_center">金额</td>
+            <td class="td_left">{{.je}}</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td class="td_left">&nbsp;</td>
+            <td class="td_center">税额</td>
+            <td class="td_left">{{.se}}</td>
+          </tr>
+        </table>
+        <table border="1" class="comm_table" width="90%" style="margin:0 auto; margin-top:-1px;">
+              <tr style="background:#fff url(images/tab_title_bg.png) repeat-x left bottom;">
+                <th scope="col">项目</th>
+                <th scope="col">数量</th>
+                <th scope="col">单价</th>
+          </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            <table  border="1" class="comm_table" width="90%" style="margin:0 auto;margin-top:-1px;">
+          <tr class="result_title">
+            <td width="100%"><span style="font-size:14px; color:#fff;">查验结果</span></td>
+          </tr>
+          <tr>
+            <td>{{.same}}</td>
+          </tr>
+        </table>
+        <div style="padding:30px 35px 0px 35px;">说明：发票信息不符时不得作为财务报销凭证，任何单位和个人有权拒收并举报！</div>
+      </div>
+      
+      <div class="comm_btn_div clearfix"> <a href="verify.html"> <img src="images/fanhui_btn.gif"> </a> </div>
+      
+    </div>
+  </div>
+</div>
+<div id="footerbox">
+<div id="footer">
+  <p>版权所有：国家税务总局 京ICP备05036792号</p>
+  <p>地址：北京市海淀区羊坊店西路5号 邮编：100038</p>
+  <p>技术支持服务：电子税务管理中心   长城计算机软件与系统有限公司</p>
+</div></div>
+</body>
+</html>
+<script type="text/javascript" src="js/jquery-float.js"></script><!--nav js-->

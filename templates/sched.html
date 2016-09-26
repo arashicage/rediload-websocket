@@ -1,0 +1,1811 @@
+<link href="touchspin/3.0.1/css/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css" media="all">
+<script src="touchspin/3.0.1/js/jquery.bootstrap-touchspin.js"></script>
+
+
+<link rel="stylesheet" href="bootstrap-tagsinput/0.5.0/css/bootstrap-tagsinput.css">
+
+
+<style>
+	.input-group-sm > .form-control,
+	.input-group-sm > .input-group-addon,
+	.input-group-sm > .input-group-btn > .btn {
+		height: 25px;
+	}
+	/*覆盖框架的 content 设置*/
+	.content { 
+  		min-height: 0px;
+	}
+
+</style>
+
+<script>
+	$(document).ready(function() {
+		$('#bthSave').on("click", function() {
+
+			var cron = $('#cron').val();
+
+			$.ajax({
+				url: '/save?' + "cron=" + cron,
+				async: true,
+				dataType: 'json',
+				type: 'GET',
+				contentType: "application/json; charset=utf8",
+				success: function(data) {
+					console.log(data);
+					$.dialog({
+						    title: '操作状态',
+						    content: 'Cron 表达式保存成功!',
+						    autoClose: 'cancel|3000',
+						});
+				
+				},
+				error: function() {
+					console.log('保存失败')
+				}
+			});
+		});
+	});
+
+</script>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-10">
+			<div class="nav-tabs-custom">
+
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#seTab" data-toggle="tab">秒</a></li>
+					<li><a href="#miTab" data-toggle="tab">分</a></li>
+					<li><a href="#hrTab" data-toggle="tab">小时</a></li>
+					<li><a href="#ddTab" data-toggle="tab">日</a></li>
+					<li><a href="#mmTab" data-toggle="tab">月</a></li>
+					<li><a href="#weTab" data-toggle="tab">星期</a></li>
+					<li class="pull-right">
+						<a href="#" class="text-muted">下次调度时间：{{.maincron}}</lable></a>
+
+					</li>
+
+					<!--<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>-->
+				</ul>
+
+				<div class="tab-content">
+
+					<div class="tab-pane active" id="seTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+
+										<div class="radio">
+											<label>
+												<input id="se_every" name="se" type="radio" value="1"> 每秒
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="se_cycle" name="se" type="radio" value="2"> 周期， 从
+											</label>
+										</div>
+										<input id="se_cycle_start" name="se_cycle_start" type="text" class="input-sm" style="width: 40px;" disabled>
+										<label>-</label>
+										<input id="se_cycle_end" name="se_cycle_end" type="text" class="input-sm" style="width: 40px;" disabled>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="se_interval" name="se" type="radio" value="3"> 间隔， 从
+											</label>
+										</div>
+										<input id="se_interval_start" name="se_interval_start" type="text" class="input-sm" style="width: 40px;" disabled> 秒开始，每
+										<input id="se_interval_end" name="se_interval_end" type="text" class="input-sm" style="width: 40px;" disabled> 秒执行一次
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="se_assign" name="se" type="radio" value="4" checked> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="se_assign_fs">
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked> 00
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 01
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 02
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 03
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 04
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 05
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 06
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 07
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="8"> 08
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="9"> 09
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="10"> 10
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="11"> 11
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="12"> 12
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="13"> 13
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="14"> 14
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="15"> 15
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="16"> 16
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="17"> 17
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="18"> 18
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="19"> 19
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="20"> 20
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="21"> 21
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="22"> 22
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="23"> 23
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="24"> 24
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="25"> 25
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="26"> 26
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="27"> 27
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="28"> 28
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="29"> 29
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="30"> 30
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="31"> 31
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="32"> 32
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="33"> 33
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="34"> 34
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="35"> 35
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="36"> 36
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="37"> 37
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="38"> 38
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="39"> 39
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="40"> 40
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="41"> 41
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="42"> 42
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="43"> 43
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="44"> 44
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="45"> 45
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="46"> 46
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="47"> 47
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="48"> 48
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="49"> 49
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="50"> 50
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="51"> 51
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="52"> 52
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="53"> 53
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="54"> 54
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="55"> 55
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="56"> 56
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="57"> 57
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="58"> 58
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="59"> 59
+														</label>
+													</div>
+
+												</div>
+
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="tab-pane" id="miTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="radio">
+											<label>
+												<input id="mi_every" name="mi" type="radio" value="1"> 每分
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mi_cycle" name="mi" type="radio" value="2"> 周期， 从
+											</label>
+										</div>
+										<input id="mi_cycle_start" name="mi_cycle_start" type="text" class="input-sm" style="width: 40px;" disabled>
+										<label>-</label>
+										<input id="mi_cycle_end" name="mi_cycle_end" type="text" class="input-sm" style="width: 40px;" disabled>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mi_interval" name="mi" type="radio" value="3"> 间隔， 从
+											</label>
+										</div>
+										<input id="mi_interval_start" name="mi_interval_start" type="text" class="input-sm" style="width: 40px;" disabled> 分开始，每
+										<input id="mi_interval_end" name="mi_interval_end" type="text" class="input-sm" style="width: 40px;" disabled> 分钟执行一次
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mi_assign" name="mi" type="radio" value="4" checked> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="mi_assign_fs">
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0" checked> 00
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 01
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 02
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 03
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 04
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 05
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 06
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 07
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="8"> 08
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="9"> 09
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="10"> 10
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="11"> 11
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="12"> 12
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="13"> 13
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="14"> 14
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="15"> 15
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="16"> 16
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="17"> 17
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="18"> 18
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="19"> 19
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="20"> 20
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="21"> 21
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="22"> 22
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="23"> 23
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="24"> 24
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="25"> 25
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="26"> 26
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="27"> 27
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="28"> 28
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="29"> 29
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="30"> 30
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="31"> 31
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="32"> 32
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="33"> 33
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="34"> 34
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="35"> 35
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="36"> 36
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="37"> 37
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="38"> 38
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="39"> 39
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="40"> 40
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="41"> 41
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="42"> 42
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="43"> 43
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="44"> 44
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="45"> 45
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="46"> 46
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="47"> 47
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="48"> 48
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="49"> 49
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="50"> 50
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="51"> 51
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="52"> 52
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="53"> 53
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="54"> 54
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="55"> 55
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="56"> 56
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="57"> 57
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="58"> 58
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="59"> 59
+														</label>
+													</div>
+
+												</div>
+
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="tab-pane" id="hrTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="radio">
+											<label>
+												<input id="hr_every" name="hr" type="radio" value="1" checked> 每时
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="hr_cycle" name="hr" type="radio" value="2"> 周期， 从
+											</label>
+										</div>
+										<input id="hr_cycle_start" name="hr_cycle_start" type="text" class="input-sm" style="width: 40px;" disabled>
+										<label>-</label>
+										<input id="hr_cycle_end" name="hr_cycle_end" type="text" class="input-sm" style="width: 40px;" disabled>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="hr_interval" name="hr" type="radio" value="3"> 间隔， 从
+											</label>
+										</div>
+										<input id="hr_interval_start" name="hr_interval_start" type="text" class="input-sm" style="width: 40px;" disabled> 时开始，每
+										<input id="hr_interval_end" name="hr_interval_end" type="text" class="input-sm" style="width: 40px;" disabled> 小时执行一次
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="hr_assign" name="hr" type="radio" value="4"> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="hr_assign_fs" disabled>
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="0"> 00
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 01
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 02
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 03
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 04
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 05
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 06
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 07
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="8"> 08
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="9"> 09
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="10"> 10
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="11"> 11
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="12"> 12
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="13"> 13
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="14"> 14
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="15"> 15
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="16"> 16
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="17"> 17
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="18"> 18
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="19"> 19
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="20"> 20
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="21"> 21
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="22"> 22
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="23"> 23
+														</label>
+													</div>
+
+												</div>
+
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="tab-pane" id="ddTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="radio">
+											<label>
+												<input id="dd_every" name="dd" type="radio" value="1" checked> 每日
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="dd_cycle" name="dd" type="radio" value="2"> 周期， 从
+											</label>
+										</div>
+										<input id="dd_cycle_start" name="dd_cycle_start" type="text" class="input-sm" style="width: 40px;" disabled>
+										<label>-</label>
+										<input id="dd_cycle_end" name="dd_cycle_end" type="text" class="input-sm" style="width: 40px;" disabled>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="dd_interval" name="dd" type="radio" value="3"> 间隔， 从
+											</label>
+										</div>
+										<input id="dd_interval_start" name="dd_interval_start" type="text" class="input-sm" style="width: 40px;" disabled> 日开始，每
+										<input id="dd_interval_end" name="dd_interval_end" type="text" class="input-sm" style="width: 40px;" disabled> 日执行一次
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="dd_assign" name="dd" type="radio" value="4"> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="dd_assign_fs" disabled>
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 01
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 02
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 03
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 04
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 05
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 06
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 07
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="8"> 08
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="9"> 09
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="10"> 10
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="11"> 11
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="12"> 12
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="13"> 13
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="14"> 14
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="15"> 15
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="16"> 16
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="17"> 17
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="18"> 18
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="19"> 19
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="20"> 20
+														</label>
+													</div>
+
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="21"> 21
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="22"> 22
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="23"> 23
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="24"> 24
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="25"> 25
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="26"> 26
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="27"> 27
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="28"> 28
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="29"> 29
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="30"> 30
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="31"> 31
+														</label>
+													</div>
+
+
+												</div>
+
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="tab-pane" id="mmTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="radio">
+											<label>
+												<input id="mm_every" name="mm" type="radio" value="1" checked> 每月
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mm_cycle" name="mm" type="radio" value="2"> 周期， 从
+											</label>
+										</div>
+										<input id="mm_cycle_start" name="mm_cycle_start" type="text" class="input-sm" style="width: 40px;" disabled>
+										<label>-</label>
+										<input id="mm_cycle_end" name="mm_cycle_end" type="text" class="input-sm" style="width: 40px;" disabled>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mm_interval" name="mm" type="radio" value="3"> 间隔， 从
+											</label>
+										</div>
+										<input id="mm_interval_start" name="mm_interval_start" type="text" class="input-sm" style="width: 40px;" disabled> 月开始，每
+										<input id="mm_interval_end" name="mm_interval_end" type="text" name="demo3_21" class="input-sm" style="width: 40px;" disabled> 月执行一次
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="mm_assign" name="mm" type="radio" value="4"> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="mm_assign_fs" disabled>
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 01
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 02
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 03
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 04
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 05
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 06
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 07
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="8"> 08
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="9"> 09
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="10"> 10
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="11"> 11
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="12"> 12
+														</label>
+													</div>
+
+												</div>
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="tab-pane" id="weTab" style="height: 240px;">
+
+						<div class="row">
+							<div class="col-md-12">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="radio">
+											<label>
+												<input id="we_every" name="we" type="radio" value="1" checked> 每星期
+											</label>
+										</div>
+
+										<br/>
+
+										<div class="radio">
+											<label>
+												<input id="we_assign" name="we" type="radio" value="4"> 指定
+											</label>
+										</div>
+
+										<br/>
+
+										<fieldset id="we_assign_fs" disabled>
+											<div class="form-group">
+												<div style="height: 140px">
+													<div>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="1"> 周一
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="2"> 周二
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="3"> 周三
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="4"> 周四
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="5"> 周五
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="6"> 周六
+														</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" value="7"> 周日
+														</label>
+													</div>
+
+												</div>
+
+											</div>
+										</fieldset>
+
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				<!-- /.tab-content -->
+
+			</div>
+			<!-- nav-tabs-custom -->
+
+		</div>
+
+	</div>
+
+	<form class="form-horizontal" role="form"> <!-- method="GET" action="/scron"> -->
+
+		<div class="form-group">
+			<label class="col-sm-1 control-label" style="text-align: left">cron 设置</label>
+
+			<div class="col-sm-7">
+				<div class="input-group">
+					<input id="cron" name="cron" type="text" class="form-control" value={{.cron}} readonly="readonly">
+					<span class="input-group-btn">
+                        <button id="bthSave" type="submit" class="btn btn-primary" onclick="return false;"> 保存配置</button>
+                    </span>
+				</div>
+
+			</div>
+		</div>
+
+	</form>
+
+</div>
+
+<script>
+	function calcCron() {
+		var exp_ss;
+		var exp_mi;
+		var exp_hr;
+		var exp_dd;
+		var exp_mm;
+		var exp_we;
+
+		var t1 = $("input[name='se']:checked").val(); //秒
+		var t2 = $("input[name='mi']:checked").val(); //分
+		var t3 = $("input[name='hr']:checked").val(); //时
+		var t4 = $("input[name='dd']:checked").val(); //日
+		var t5 = $("input[name='mm']:checked").val(); //月
+		var t6 = $("input[name='we']:checked").val(); //星期
+
+		switch (t1) {
+			case "1":
+				exp_ss = "*";
+				break;
+			case "2":
+				exp_ss = $('#se_cycle_start').val() + "-" + $('#se_cycle_end').val();
+				break;
+			case "3":
+				exp_ss = $('#se_interval_start').val() + "/" + $('#se_interval_end').val();
+				break;
+			case "4":
+				$('#se_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_ss) == 'undefined') {
+							exp_ss = this.value;
+						} else {
+							exp_ss = exp_ss + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_ss === undefined) {
+					exp_ss = "0";
+				}
+
+				break;
+		}
+
+		switch (t2) {
+			case "1":
+				exp_mi = "*";
+				break;
+			case "2":
+				exp_mi = $('#mi_cycle_start').val() + "-" + $('#mi_cycle_end').val();
+				break;
+			case "3":
+				exp_mi = $('#mi_interval_start').val() + "/" + $('#mi_interval_end').val();
+				break;
+			case "4":
+				$('#mi_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_mi) == 'undefined') {
+							exp_mi = this.value;
+						} else {
+							exp_mi = exp_mi + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_mi === undefined) {
+					exp_mi = "0";
+				}
+
+				break;
+		}
+
+		switch (t3) {
+			case "1":
+				exp_hr = "*";
+				break;
+			case "2":
+				exp_hr = $('#hr_cycle_start').val() + "-" + $('#hr_cycle_end').val();
+				break;
+			case "3":
+				exp_hr = $('#hr_interval_start').val() + "/" + $('#hr_interval_end').val();
+				break;
+			case "4":
+				$('#hr_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_hr) == 'undefined') {
+							exp_hr = this.value;
+						} else {
+							exp_hr = exp_hr + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_hr === undefined) {
+					exp_hr = "*";
+				}
+
+				break;
+		}
+
+		switch (t4) {
+			case "1":
+				exp_dd = "*";
+				break;
+			case "2":
+				exp_dd = $('#dd_cycle_start').val() + "-" + $('#dd_cycle_end').val();
+				break;
+			case "3":
+				exp_dd = $('#dd_interval_start').val() + "/" + $('#dd_interval_end').val();
+				break;
+			case "4":
+				$('#dd_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_dd) == 'undefined') {
+							exp_dd = this.value;
+						} else {
+							exp_dd = exp_dd + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_dd === undefined) {
+					exp_dd = "*";
+				}
+
+				break;
+		}
+
+		switch (t5) {
+			case "1":
+				exp_mm = "*";
+				break;
+			case "2":
+				exp_mm = $('#mm_cycle_start').val() + "-" + $('#mm_cycle_end').val();
+				break;
+			case "3":
+				exp_mm = $('#mm_interval_start').val() + "/" + $('#mm_interval_end').val();
+				break;
+			case "4":
+				$('#mm_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_mm) == 'undefined') {
+							exp_mm = this.value;
+						} else {
+							exp_mm = exp_mm + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_mm === undefined) {
+					exp_mm = "*";
+				}
+
+				break;
+		}
+
+		switch (t6) {
+			case "1":
+				exp_we = "*";
+				break;
+			case "2":
+				exp_we = $('#we_cycle_start').val() + "-" + $('#we_cycle_end').val();
+				break;
+				/*                case "3":
+				 exp_we = $('#we_interval_start').val() + "/" + $('#we_interval_end').val();
+				 break;*/
+			case "4":
+				$('#we_assign_fs input').each(function() {
+					if (this.checked) {
+						if (typeof(exp_we) == 'undefined') {
+							exp_we = this.value;
+						} else {
+							exp_we = exp_we + "," + this.value;
+						}
+					}
+				});
+
+				if (exp_we === undefined) {
+					exp_we = "*";
+				}
+
+				break;
+		}
+
+		//            var elt = $('.bootstrap-tagsinput input').tagsinput();
+
+		//            $('.bootstrap-tagsinput input').tagsinput('add', 'exp_ss');
+
+		$('#cron').val(exp_ss + " " + exp_mi + " " + exp_hr + " " + exp_dd + " " + exp_mm + " " + exp_we);
+
+	}
+
+	$(function() {
+
+		$(".bootstrap-tagsinput").css("width", "100%");
+
+		$('#se_every').attr('disabled', true);
+		$('#se_cycle').attr('disabled', true);
+		$('#se_interval').attr('disabled', true);
+		$('#se_assign').attr('disabled', true);
+		$('#se_assign_fs').attr('disabled', true);
+
+		/*            $('#mi_every').attr('disabled', true);
+		            $('#mi_cycle').attr('disabled', true);
+		            $('#mi_interval').attr('disabled', true);
+		            $('#mi_assign').attr('disabled', true);
+		            $('#mi_assign_fs').attr('disabled', true);*/
+
+		$('#we_every').attr('disabled', true);
+		$('#we_cycle').attr('disabled', true);
+		$('#we_assign').attr('disabled', true);
+		$('#we_assign_fs').attr('disabled', true);
+
+		$('#cronTab a:first').tab('show'); //初始化显示哪个tab
+		// $('#cronTab a[href="#home"]').tab('show');//初始化显示哪个tab
+
+		$('#cronTab a').click(function(e) {
+			e.preventDefault(); //阻止a链接的跳转行为
+			$(this).tab('show'); //显示当前选中的链接及关联的content
+		});
+		//秒
+		$('#se_every').click(function(e) {
+			$("#se_assign_fs").find("input").attr('checked', false);
+			$('#se_assign_fs').attr('disabled', 'disabled');
+			$('#se_cycle_start').attr('disabled', 'disabled');
+			$('#se_cycle_end').attr('disabled', 'disabled');
+			$('#se_interval_start').attr('disabled', 'disabled');
+			$('#se_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#se_cycle').click(function(e) {
+			$("#se_assign_fs").find("input").attr('checked', false);
+			$('#se_assign_fs').attr('disabled', 'disabled');
+			$('#se_cycle_start').attr('disabled', false);
+			$('#se_cycle_end').attr('disabled', false);
+			$('#se_interval_start').attr('disabled', 'disabled');
+			$('#se_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#se_interval').click(function(e) {
+			$("#se_assign_fs").find("input").attr('checked', false);
+			$('#se_assign_fs').attr('disabled', 'disabled');
+			$('#se_cycle_start').attr('disabled', 'disabled');
+			$('#se_cycle_end').attr('disabled', 'disabled');
+			$('#se_interval_start').attr('disabled', false);
+			$('#se_interval_end').attr('disabled', false);
+			calcCron();
+		});
+
+		$('#se_assign').click(function(e) {
+			$('#se_assign_fs').attr('disabled', false);
+			$('#se_cycle_start').attr('disabled', 'disabled');
+			$('#se_cycle_end').attr('disabled', 'disabled');
+			$('#se_interval_start').attr('disabled', 'disabled');
+			$('#se_interval_end').attr('disabled', 'disabled');
+			//                $('#se_assign_fs').find('input').eq(3).attr('checked', true);
+			//                calcCron();
+		});
+
+		$('#se_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+		//分
+		$('#mi_every').click(function(e) {
+			$("#mi_assign_fs").find("input").attr('checked', false);
+			$('#mi_assign_fs').attr('disabled', 'disabled');
+			$('#mi_cycle_start').attr('disabled', 'disabled');
+			$('#mi_cycle_end').attr('disabled', 'disabled');
+			$('#mi_interval_start').attr('disabled', 'disabled');
+			$('#mi_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#mi_cycle').click(function(e) {
+			$("#mi_assign_fs").find("input").attr('checked', false);
+			$('#mi_assign_fs').attr('disabled', 'disabled');
+			$('#mi_cycle_start').attr('disabled', false);
+			$('#mi_cycle_end').attr('disabled', false);
+			$('#mi_interval_start').attr('disabled', 'disabled');
+			$('#mi_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#mi_interval').click(function(e) {
+			$("#mi_assign_fs").find("input").attr('checked', false);
+			$('#mi_assign_fs').attr('disabled', 'disabled');
+			$('#mi_cycle_start').attr('disabled', 'disabled');
+			$('#mi_cycle_end').attr('disabled', 'disabled');
+			$('#mi_interval_start').attr('disabled', false);
+			$('#mi_interval_end').attr('disabled', false);
+			calcCron();
+		});
+
+		$('#mi_assign').click(function(e) {
+			$('#mi_assign_fs').attr('disabled', false);
+			$('#mi_cycle_start').attr('disabled', 'disabled');
+			$('#mi_cycle_end').attr('disabled', 'disabled');
+			$('#mi_interval_start').attr('disabled', 'disabled');
+			$('#mi_interval_end').attr('disabled', 'disabled');
+			//                calcCron();
+		});
+
+		$('#mi_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+		//小时
+		$('#hr_every').click(function(e) {
+			$("#hr_assign_fs").find("input").attr('checked', false);
+			$('#hr_assign_fs').attr('disabled', 'disabled');
+			$('#hr_cycle_start').attr('disabled', 'disabled');
+			$('#hr_cycle_end').attr('disabled', 'disabled');
+			$('#hr_interval_start').attr('disabled', 'disabled');
+			$('#hr_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#hr_cycle').click(function(e) {
+			$("#hr_assign_fs").find("input").attr('checked', false);
+			$('#hr_assign_fs').attr('disabled', 'disabled');
+			$('#hr_cycle_start').attr('disabled', false);
+			$('#hr_cycle_end').attr('disabled', false);
+			$('#hr_interval_start').attr('disabled', 'disabled');
+			$('#hr_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#hr_interval').click(function(e) {
+			$("#hr_assign_fs").find("input").attr('checked', false);
+			$('#hr_assign_fs').attr('disabled', 'disabled');
+			$('#hr_cycle_start').attr('disabled', 'disabled');
+			$('#hr_cycle_end').attr('disabled', 'disabled');
+			$('#hr_interval_start').attr('disabled', false);
+			$('#hr_interval_end').attr('disabled', false);
+			calcCron();
+		});
+
+		$('#hr_assign').click(function(e) {
+			$('#hr_assign_fs').attr('disabled', false);
+			$('#hr_cycle_start').attr('disabled', 'disabled');
+			$('#hr_cycle_end').attr('disabled', 'disabled');
+			$('#hr_interval_start').attr('disabled', 'disabled');
+			$('#hr_interval_end').attr('disabled', 'disabled');
+			//                calcCron();
+		});
+
+		$('#hr_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+		//日
+		$('#dd_every').click(function(e) {
+			$("#dd_assign_fs").find("input").attr('checked', false);
+			$('#dd_assign_fs').attr('disabled', 'disabled');
+			$('#dd_cycle_start').attr('disabled', 'disabled');
+			$('#dd_cycle_end').attr('disabled', 'disabled');
+			$('#dd_interval_start').attr('disabled', 'disabled');
+			$('#dd_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#dd_cycle').click(function(e) {
+			$("#dd_assign_fs").find("input").attr('checked', false);
+			$('#dd_assign_fs').attr('disabled', 'disabled');
+			$('#dd_cycle_start').attr('disabled', false);
+			$('#dd_cycle_end').attr('disabled', false);
+			$('#dd_interval_start').attr('disabled', 'disabled');
+			$('#dd_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#dd_interval').click(function(e) {
+			$("#dd_assign_fs").find("input").attr('checked', false);
+			$('#dd_assign_fs').attr('disabled', 'disabled');
+			$('#dd_cycle_start').attr('disabled', 'disabled');
+			$('#dd_cycle_end').attr('disabled', 'disabled');
+			$('#dd_interval_start').attr('disabled', false);
+			$('#dd_interval_end').attr('disabled', false);
+			calcCron();
+		});
+
+		$('#dd_assign').click(function(e) {
+			$('#dd_assign_fs').attr('disabled', false);
+			$('#dd_cycle_start').attr('disabled', 'disabled');
+			$('#dd_cycle_end').attr('disabled', 'disabled');
+			$('#dd_interval_start').attr('disabled', 'disabled');
+			$('#dd_interval_end').attr('disabled', 'disabled');
+			//                calcCron();
+		});
+
+		$('#dd_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+		//月
+		$('#mm_every').click(function(e) {
+			$("#mm_assign_fs").find("input").attr('checked', false);
+			$('#mm_assign_fs').attr('disabled', 'disabled');
+			$('#mm_cycle_start').attr('disabled', 'disabled');
+			$('#mm_cycle_end').attr('disabled', 'disabled');
+			$('#mm_interval_start').attr('disabled', 'disabled');
+			$('#mm_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#mm_cycle').click(function(e) {
+			$("#mm_assign_fs").find("input").attr('checked', false);
+			$('#mm_assign_fs').attr('disabled', 'disabled');
+			$('#mm_cycle_start').attr('disabled', false);
+			$('#mm_cycle_end').attr('disabled', false);
+			$('#mm_interval_start').attr('disabled', 'disabled');
+			$('#mm_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#mm_interval').click(function(e) {
+			$("#mm_assign_fs").find("input").attr('checked', false);
+			$('#mm_assign_fs').attr('disabled', 'disabled');
+			$('#mm_cycle_start').attr('disabled', 'disabled');
+			$('#mm_cycle_end').attr('disabled', 'disabled');
+			$('#mm_interval_start').attr('disabled', false);
+			$('#mm_interval_end').attr('disabled', false);
+			calcCron();
+		});
+
+		$('#mm_assign').click(function(e) {
+			$('#mm_assign_fs').attr('disabled', false);
+			$('#mm_cycle_start').attr('disabled', 'disabled');
+			$('#mm_cycle_end').attr('disabled', 'disabled');
+			$('#mm_interval_start').attr('disabled', 'disabled');
+			$('#mm_interval_end').attr('disabled', 'disabled');
+			//                calcCron();
+		});
+
+		$('#mm_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+		//星期
+		$('#we_every').click(function(e) {
+			$("#we_assign_fs").find("input").attr('checked', false);
+			$('#we_assign_fs').attr('disabled', 'disabled');
+			$('#we_cycle_start').attr('disabled', 'disabled');
+			$('#we_cycle_end').attr('disabled', 'disabled');
+			$('#we_interval_start').attr('disabled', 'disabled');
+			$('#we_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#we_cycle').click(function(e) {
+			$("#we_assign_fs").find("input").attr('checked', false);
+			$('#we_assign_fs').attr('disabled', 'disabled');
+			$('#we_cycle_start').attr('disabled', false);
+			$('#we_cycle_end').attr('disabled', false);
+			$('#we_interval_start').attr('disabled', 'disabled');
+			$('#we_interval_end').attr('disabled', 'disabled');
+			calcCron();
+		});
+
+		$('#we_assign').click(function(e) {
+			$('#we_assign_fs').attr('disabled', false);
+			$('#we_cycle_start').attr('disabled', 'disabled');
+			$('#we_cycle_end').attr('disabled', 'disabled');
+			$('#we_interval_start').attr('disabled', 'disabled');
+			$('#we_interval_end').attr('disabled', 'disabled');
+			//                calcCron();
+		});
+
+		$('#we_assign_fs input').click(function(e) {
+			calcCron();
+		});
+
+	})
+
+</script>
+
+<script>
+	// 秒
+	$("input[name='se_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 58
+	});
+
+	$("input[name='se_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 0,
+		max: 59
+	});
+
+	$("input[name='se_interval_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 59
+	});
+
+	$("input[name='se_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#se_cycle_start').on('change', function(e) {
+		if (Number($('#se_cycle_start').val()) >= Number($('#se_cycle_end').val())) {
+			$('#se_cycle_end').val(Number($('#se_cycle_end').val()) + 1);
+		}
+		calcCron();
+	});
+
+	$('#se_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#se_interval_start').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#se_interval_end').on('change', function(e) {
+		calcCron();
+	});
+
+	// 分
+	$("input[name='mi_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 58
+	});
+
+	$("input[name='mi_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 0,
+		max: 59
+	});
+
+	$("input[name='mi_interval_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 59
+	});
+
+	$("input[name='mi_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#mi_cycle_start').on('change', function(e) {
+		if (Number($('#mi_cycle_start').val()) >= Number($('#mi_cycle_end').val())) {
+			$('#mi_cycle_end').val(Number($('#mi_cycle_end').val()) + 1);
+			calcCron();
+		}
+	});
+
+	$('#mi_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#mi_interval_start').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#mi_interval_end').on('change', function(e) {
+		calcCron();
+	});
+
+	// 小时
+	$("input[name='hr_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 22
+	});
+
+	$("input[name='hr_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 1,
+		max: 23
+	});
+
+	$("input[name='hr_interval_start']").TouchSpin({
+		initval: 0,
+		min: 0,
+		max: 23
+	});
+
+	$("input[name='hr_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#hr_cycle_start').on('change', function(e) {
+		if (Number($('#hr_cycle_start').val()) >= Number($('#hr_cycle_end').val())) {
+			$('#hr_cycle_end').val(Number($('#hr_cycle_end').val()) + 1);
+			calcCron();
+		}
+	});
+
+	$('#hr_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#hr_interval_start').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#hr_interval_end').on('change', function(e) {
+		calcCron();
+	});
+
+	// 日
+	$("input[name='dd_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 30
+	});
+
+	$("input[name='dd_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 2,
+		max: 31
+	});
+
+	$("input[name='dd_interval_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 31
+	});
+
+	$("input[name='dd_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#dd_cycle_start').on('change', function(e) {
+		if (Number($('#dd_cycle_start').val()) >= Number($('#dd_cycle_end').val())) {
+			$('#dd_cycle_end').val(Number($('#dd_cycle_end').val()) + 1);
+			calcCron();
+		}
+	});
+
+	$('#dd_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#dd_interval_start').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#dd_interval_end').on('change', function(e) {
+		calcCron();
+	});
+
+	// 月
+	$("input[name='mm_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 11
+	});
+
+	$("input[name='mm_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 2,
+		max: 12
+	});
+
+	$("input[name='mm_interval_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 12
+	});
+
+	$("input[name='mm_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#mm_cycle_start').on('change', function(e) {
+		if (Number($('#mm_cycle_start').val()) >= Number($('#mm_cycle_end').val())) {
+			$('#mm_cycle_end').val(Number($('#mm_cycle_end').val()) + 1);
+			calcCron();
+		}
+	});
+
+	$('#mm_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#mm_interval_start').on('change', function(e) {
+		calcCron();
+	});
+
+	$('#mm_interval_end').on('change', function(e) {
+		calcCron();
+	});
+
+	// 星期
+	$("input[name='we_cycle_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 6
+	});
+
+	$("input[name='we_cycle_end']").TouchSpin({
+		initval: 1,
+		min: 2,
+		max: 7
+	});
+
+	$("input[name='we_interval_start']").TouchSpin({
+		initval: 0,
+		min: 1,
+		max: 7
+	});
+
+	$("input[name='we_interval_end']").TouchSpin({
+		initval: 0,
+		min: 1
+	});
+
+	$('#we_cycle_start').on('change', function(e) {
+		if (Number($('#we_cycle_start').val()) >= Number($('#we_cycle_end').val())) {
+			$('#we_cycle_end').val(Number($('#we_cycle_end').val()) + 1);
+			calcCron();
+		}
+	});
+
+	$('#we_cycle_end').on('change', function(e) {
+		calcCron();
+	});
+
+	//        $('#we_interval_start').on('change', function (e) {
+	//            calcCron();
+	//        });
+	//
+	//        $('#we_interval_end').on('change', function (e) {
+	//            calcCron();
+	//        });
+
+</script>
+
+<script src="jquery/1.11.1/jquery.min.js"></script>
+<script src="bootstrap-tagsinput/0.5.0/js/bootstrap-tagsinput.min.js"></script>

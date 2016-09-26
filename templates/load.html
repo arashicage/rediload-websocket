@@ -1,0 +1,363 @@
+<!-- 
+jQuery.noConflict();
+$('#what').selectpicker('val', '01');
+ -->
+
+<div class="container" style="margin-top: 40px;">
+
+	<div id="formname" class="form-horizontal" role="form">
+
+		<!-- warn and alert -->
+		<div class="form-group">
+			<label id="warn" class="col-sm-2 control-label" style="display: none;"> &nbsp;</label>
+			<div class="col-sm-9">
+				<div id="alert" class="alert alert-danger" role="alert" style="display: none; width: 100%;"></div>
+			</div>
+		</div>
+
+		<!-- (fplx_dm,sjlx_dm) -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="text-align: right">发票类型</label>
+			<div class="col-sm-3">
+				<select id="fplx" name="fplx" class="selectpicker show-tick form-control" data-size="8" onchange="optionsChange();">
+					<option value="01">01-增值税专用发票</option>
+					<option value="02">02-货物运输业专用发票</option>
+					<option value="03">03-机动车销售统一发票</option>
+					<option value="04">04-增值税普通发票</option>
+					<option value="10">10-增值税普通发票（电子发票）</option>
+					<option value="11">11-增值税普通发票（卷式发票）</option>
+				</select>
+			</div>
+			<label class="col-sm-1 control-label">数据类型</label>
+			<div class="col-sm-3">
+				<select id="what" name="what" class="selectpicker show-tick form-control" data-size="5" onchange="optionsChange();">
+					<option value="01">发票信息</option>
+					<option value="02">货物信息</option>
+				</select>
+			</div>
+			<label class="col-sm-2 control-label" style="text-align: center;font-weight:normal;"><a id="defaults_toggle" href="#">查看默认选项</a></label>
+		</div>
+
+		<!-- defaults -->
+		<div id="defaults" hidden="hidden">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Core</label>
+				<div class="col-sm-9">
+					<input id="core" name="core" type="text" class="form-control" placeholder="32" value="32">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Worker</label>
+				<div class="col-sm-9">
+					<input id="worker" name="worker" type="text" class="form-control" placeholder="100" value="100">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Batch</label>
+				<div class="col-sm-9">
+					<input id="batch" name="batch" type="text" class="form-control" placeholder="100000" value="100000">
+				</div>
+			</div>
+		</div>
+
+		<!-- url -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">redis 地址</label>
+			<div class="col-sm-9">
+				<input id="url" name="url" type="text" class="form-control" placeholder="输入redis实例或代理服务器的URL，例如 127.0.0.1:6379" value="172.30.11.230:6384">
+			</div>
+		</div>
+
+		<!-- uid -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Uid</label>
+			<div class="col-sm-9">
+				<input id="uid" name="uid" type="text" class="form-control" placeholder="输入用于连接底账数据库的信息，例如 dzdz/oracle@dzdz" value="fpcy/oracle@fpcy_dev_13400">
+			</div>
+		</div>
+
+		<!-- sql -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">SQL</label>
+			<div class="col-sm-9">
+				<textarea id="sql" name="sql" class="form-control" style="resize:vertical;font-family:lucida console;" rows="3" placeholder="select /*+ parallel(t,8) */ '01:'||fpdm||fphm key,kprq, skm, gfmc, gfsbh, gfdzdh, gfyhzh, xfmc, xfsbh, xfdzdh, xfyhzh, je, se, jshj, bz, skr, fhr, kpr, jqbh, kpjh,trunc((sysdate-kprq)*1440*60) expire from dzdz_fpxx_zzsfp"></textarea>
+			</div>
+		</div>
+
+		<!-- fields -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Hash Fields</label>
+			<div class="col-sm-9">
+				<textarea id="fields" name="fields" type="text" class="form-control" style="resize:vertical;font-family:lucida console;" rows="2" placeholder="key,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,expire"></textarea>
+			</div>
+		</div>
+
+		<!-- codepage -->
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Code Page</label>
+			<div class="col-sm-9">
+				<select id="codepage" name="codepage" class="selectpicker show-tick form-control" data-size="5">
+					<option id="c01" name="c01" value="utf8">UTF8</option>
+					<option id="c02" name="c02" value="gbk">GBK</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- log -->
+		<div id="log" class="form-group">
+			<label class="col-sm-2 control-label">Log</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input id="log" name="log" type="text" class="form-control" value={{.log}} readonly>
+					<span class="input-group-btn">
+						<button id="load_submit" type="submit" class="btn btn-primary" > 加载</button>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">加载进度</label>
+			<div class=" col-sm-9">
+				<div id="console-wrap" style=" background-color: darkgreen; color: white; margin-top: 0px; border-radius: 4px; padding: 10px; overflow-y: auto;">
+					<!--style="max-height: 400px; background-color: darkgreen; color: white; margin-top: 0px; border-radius: 4px; padding: 10px; overflow-y: auto;">-->
+					<pre id="console" style="background-color: transparent; border: none; border-radius: 0; padding: 0; color: white;"></pre>
+					<div id="waiting"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		optionsChange();
+
+		$('#defaults_toggle').click(function(event) {
+			$('#defaults').toggle('hidden');
+
+			if ($(this).html() == "查看默认选项") {
+				$(this).html("隐藏默认选项");
+			} else {
+				$(this).html("查看默认选项");
+			}
+
+		});
+
+		$('#load_submit').click(function(event) {
+
+			checkInput();
+
+		});
+
+	});
+
+</script>
+
+<script type="text/javascript">
+	function loadredis() {
+
+		var intervalID;
+
+		$("#console").empty();
+		var what = $("#what").val();
+		var url = $("#url").val();
+		var core = $("#core").val();
+		var worker = $("#worker").val();
+		var uid = $("#uid").val();
+
+		var sql = $("#sql").val().replace(/\n/g, '_@').replace(/\n/g, '_#').replace(/\+/g, '_$');
+		sql = sql.replace(/_#_@/g, '<br/>');
+
+		var fields = $("#fields").val();
+		var batch = $("#batch").val();
+		var codepage = $("#codepage").val();
+		var log = $("#log").val();
+		console.log("what        :" + what);
+		console.log("url         :" + url);
+		console.log("core        :" + core);
+		console.log("worker      :" + worker);
+		console.log("uid         :" + uid);
+		console.log("sql         :" + sql);
+		console.log("fields      :" + fields);
+		console.log("batch       :" + batch);
+		console.log("codepage    :" + codepage);
+		console.log("log         :" + log);
+		var sock = null;
+		var wsurl = "ws://" + window.location.host + "/load/ws?" + "what=" + what + "&" + "url=" + url + "&" + "core=" + core + "&" + "worker=" + worker + "&" + "uid=" + uid + "&" + "sql=" + sql + "&" + "fields=" + fields + "&" + "batch=" + batch + "&" + "codepage=" + codepage + "&" + "log=" + log;
+
+		console.log("ws          :" + wsurl);
+		console.log("====================================================以下为程序输出====================================================");
+		console.log(" ");
+		try {
+			sock = new WebSocket(wsurl);
+		} catch (e) {
+			alert(e);
+		}
+		sock.onopen = function() {
+			console.log("connected to" + wsurl);
+			intervalID = setInterval(function() {
+				$('#waiting').append('.');
+			}, 1000);
+		};
+		sock.onerror = function(e) {
+			console.log("err from connect" + e);
+		};
+		sock.onclose = function(e) {
+			console.log("connection closed (" + e.code + ")");
+		};
+		sock.onmessage = function(e) {
+			console.log("message received:" + e.data);
+			var data = eval('(' + e.data + ')');
+			if (data.type == "output") {
+				$("#console").append(data.msg + "\n");
+			} else if (data.type == "command") {
+				$("#console").append("$" + data.msg + "\n");
+			} else if (data.type == "completed") {
+				$("#console").append("<strong>" + data.msg + "</strong>\n");
+				clearInterval(intervalID);
+				$('#waiting').empty();
+			} else if (data.type == "error") {
+				$("#console").append('<span style="color: red;">' + data.msg + '</span>\n');
+				clearInterval(intervalID);
+				$('#waiting').empty();
+			}
+			console.log($('#console')[0].scrollHeight);
+			//            $("#console-wrap").css('max-height', $('#console')[0].scrollHeight + 200);
+			$("#console").css('height', $('#console')[0].scrollHeight + 10);
+		}
+	}
+
+	function optionsChange() {
+		var fplxVal = $('#fplx').val();
+		var sjlxVal = $('#what').val();
+		// $("#console").empty();
+		var adjusted = false;
+
+
+		if (fplxVal == "03" && sjlxVal == "02") {
+
+			// 显示提示信息
+			$('#warn').css('display', 'block');
+			$('#alert').html('机动车发票的发票信息和货物信息在相同的表中存储，已经将您选择的数据类型调整为：发票信息。');
+			$('#alert').css('display', 'block');
+
+			jQuery.noConflict();
+			$('#what').selectpicker('val', '01');
+
+			// 将数据类型修改为 01
+			sjlxVal = "01";
+			adjusted = true;
+		}
+
+		// 机动车发票没有货物需要特殊处理，否则后续取得 sql 行数的时候 js 会报错
+		if (fplxVal == "03" && sjlxVal == "02") {
+			// 显示提示信息
+			$('#warn').css('display', 'block');
+			$('#alert').html('机动车发票没有货物信息，请重新选择！');
+			$('#alert').css('display', 'block');
+			// 清空 sql 和 fields
+			$('#sql').html('').attr({
+				placeholder: '',
+				rows: 3
+			});
+			$('#fields').html('').attr({
+				placeholder: '',
+				rows: 2
+			});
+
+			return false;
+
+		} else {
+
+			if (adjusted) {
+				console.log("用户选择了：03-02");
+			} else {
+				$('#warn').css('display', 'none');
+				$('#alert').css('display', 'none');
+			}
+
+			$.ajax({
+				url: '/options?' + "fplx=" + fplxVal + "&" + "sjlx=" + sjlxVal,
+				async: true,
+				dataType: 'json',
+				type: 'GET',
+				contentType: "application/json; charset=utf8",
+				success: function(data) {
+
+					var re = new RegExp("\n", "g");
+					var arr = data.sql.match(re);
+					// console.log(arr.length);
+					console.log(data.sql);
+					$('#sql').html(data.sql);
+					$('#fields').html(data.fields);
+
+					console.log(arr.length);
+
+					$('#sql').attr('rows', arr.length + (sjlxVal == "02" ? 5 : 3)); // 微调,发票数据加5行,货物数据加3行
+				},
+				error: function() {
+					//
+				}
+			});
+		}
+	}
+
+	function checkInput() {
+
+		if ($('#url').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 redis 连接信息，请输入有效的 redis 连接信息。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#core').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 core，请输入有效的 core。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#worker').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 worker，请输入有效的 worker。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#batch').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 batch，请输入有效的 batch。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#sql').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 sql，请输入有效的 sql。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#fields').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 fields，请输入有效的 fields。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+		if ($('#uid').val().length == 0) {
+			$('#warn').css('display', 'block');
+			$('#alert').html("您没有输入 uid，请输入有效的 uid。");
+			$('#alert').css('display', 'block');
+			return false;
+		}
+
+		$('#warn').css('display', 'none');
+		$('#alert').css('display', 'none');
+
+		loadredis();
+	}
+
+</script>

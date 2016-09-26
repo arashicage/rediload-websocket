@@ -1,0 +1,73 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+
+	h1 := map[int][]string{
+		1: {"VM1", "VM2", "VM3", "VM4", "VM5", "VM6"},
+		2: {"VM1", "VM2", "VM3", "VM4", "VM5", "VM6"},
+		3: {"VM1", "VM2", "VM3", "VM4", "VM5", "VM6"},
+	}
+
+	h2 := map[int][]string{
+		1: {"VM1", "VM2", "VM3"},
+		2: {"VM1", "VM2", "VM3"},
+		3: {"VM1", "VM2", "VM3"},
+	}
+
+	c2, _ := strconv.Atoi(os.Args[1])
+	c1, _ := strconv.Atoi(os.Args[2])
+	// mon, _ := strconv.Atoi(os.Args[3])
+
+	for i := 1; i <= 12; i++ {
+		fmt.Println("===== month ===== ", i)
+		dist(c2, c1, i, h2, h1)
+	}
+
+}
+
+func dist(c2, c1, mon int, h2, h1 map[int][]string) {
+	// 月份对应的端口
+	port := 6379 + mon - 1
+	// 通过c2 mon 计算当前应该用那个编号的虚机
+	no := mon % 3
+	if no == 0 {
+		no = 3 - 1
+	} else {
+		no = no - 1
+	}
+
+	no2 := mon % 6
+	if no2 == 0 {
+		no2 = 6 - 1
+	} else {
+		no2 = no2 - 1
+	}
+
+	no3 := no2 + 1
+	no3 = mon % 6
+
+	for i := 1; i <= c2; i++ {
+		vms := h2[i]
+		fmt.Println("h2:", i, ":", vms[no], ":", port)
+	}
+
+	fmt.Println()
+
+	for i := 1; i <= c1; i++ {
+		vms := h1[i]
+		fmt.Println("h1:", i, ":", vms[no2], ":", port)
+	}
+
+	fmt.Println()
+
+	for i := 1; i <= c1; i++ {
+		vms := h1[i]
+		fmt.Println("h1:", i, ":", vms[no3], ":", port)
+	}
+}

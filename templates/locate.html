@@ -1,0 +1,271 @@
+<script src="/jqplot/1.0.8/jquery.jqplot.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.highlighter.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script src="/jqplot/1.0.8/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<link href="/jqplot/1.0.8/jquery.jqplot.min.css" rel="stylesheet">
+
+<style>
+    #history th, #history td {
+        text-align: right;
+        height:30px;
+    }
+    #basic th, #basic td {
+        /*text-align: right;*/
+        height:30px;
+    }
+
+    .progress {
+        height: 35px;
+        /*padding-right: 0px;*/
+        /*padding-left: 0px;*/
+    }
+
+    .progress-bar {
+        line-height: 35px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    function initBar(){
+        $("#pdiv").children("div").remove();
+
+        var urls= $("#urls").val();
+        url_list=urls.split(",");
+
+        for (i=0;i<url_list.length;i++){
+            $("#pdiv").append("<div class='col-sm-2'><div><h4><em>"+url_list[i]+"</em></h4> </div></div>");
+            $("#pdiv").append(
+                    "<div class='col-sm-7' style='height: 40px;'>"+
+                    "<div class='progress'>"+
+                    "<div id='redis_"+(i+1)+"' class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='min-width: 3em;width: 0%;'>0%"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"
+            );
+            $("#pdiv").append(
+                    "<div class='col-sm-2'>"+
+                    "<div>"+
+                    "<h4><em id='redis_"+(i+1)+"_t'>0/0</em></h4>"+
+                    "</div>"+
+                    "</div>"
+            );
+        }
+    }
+
+    function updProcessBar(msg){
+
+        var info= new Array();
+        info=msg.split(",");
+
+        if (info[4] == "0"){
+//            if (info[3] == "172.30.11.230:6379"){
+            $("#redis_1").width(info[2]);
+            $("#redis_1").text(info[2]);
+            $("#redis_1_t").text(info[0]+"/"+info[1]);
+
+            if (info[2] == "100.00%"){
+                console.log(info[2])
+                $("#redis_1").removeClass("active");
+            }
+        }else if (info[4] == "1"){
+//        }else if (info[3] == "130.9.1.22:6379"){
+            $("#redis_2").width(info[2]);
+            $("#redis_2").text(info[2]);
+            $("#redis_2_t").text(info[0]+"/"+info[1]);
+
+            if (info[2] == "100.00%"){
+                $("#redis_2").removeClass("active");
+            }
+        }
+    }
+
+    var sock = null;
+
+    function startMon() {
+
+        var wsurl = "ws://"+window.location.host+"/locate/ws?"
+                + "fplx=" + $("#fplx").val() + "&"
+                + "fpdm=" + $("#fpdm").val() + "&"
+                + "fphm=" + $("#fphm").val() ;
+
+        console.log("ws          :"+wsurl);
+
+        console.log("====================================================以下为程序输出====================================================");
+        console.log(" ");
+
+        try {
+            sock = new WebSocket(wsurl);
+        } catch (e) {
+            alert(e.Message);
+        }
+
+        sock.onopen = function () {
+            console.log("connected to " + wsurl);
+        }
+
+        sock.onerror = function (e) {
+            console.log("err from connect " + e);
+        }
+
+        sock.onclose = function (e) {
+            console.log("connection closed (" + e.code + ")");
+        }
+
+        sock.onmessage = function (e) {
+            console.log("message received: " + e.data);
+            var data = eval('(' + e.data + ')');
+            if (data.type == "output") {
+                updHistory(data.msg,10);
+                console.log(data.msg);
+            }
+            else if (data.type == "error") {
+                console.log("error received: " + data.msg);
+            }
+        }
+    }
+
+    function suspendMon(){
+        sock.send("stop");
+    }
+
+    //    function x111(){
+    //
+    //    $("#pdiv").html("<div class="col-sm-2">
+    //                <div>
+    //                <h4><em>172.30.11.230:6379</em></h4>
+    //        </div>
+    //        </div>
+    //
+    //        <div class="col-sm-7" style="height: 40px;">
+    //                <div class="progress">
+    //                <div id="redis_1" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width: 0%;">
+    //
+    //                </div>
+    //                </div>
+    //                </div>");
+    //
+    //    }
+
+    function updHistory(row,max) {
+
+        if ($("#info").children("tr").length==0) {
+            $("#info").append(row);
+            $("#info").children("tr:first-child").css("textDecoration","underline").css("font-weight","bolder").addClass("success");
+        }else if ($("#info").children("tr").length <max) {
+            $("#info").children("tr:first-child").css("textDecoration","").css("font-weight","").removeClass("success");
+            $("#info").children("tr:first-child").before(row);
+            $("#info").children("tr:first-child").css("textDecoration","underline").css("font-weight","bolder").addClass("success");
+        }else if($("#info").children("tr").length ==max){
+            $("#info").children("tr:first-child").css("textDecoration","").css("font-weight","").removeClass("success");
+            $("#info").children("tr:last-child").remove();
+            $("#info").children("tr:first-child").before(row);
+            $("#info").children("tr:first-child").css("textDecoration","underline").css("font-weight","bolder").addClass("success");
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    function abc(){
+        $.ajax({
+            type:"GET",
+            data:"",
+            dataType:"json",
+            url:"/api/stat",
+            success:function(msg){
+                alert(msg.URL);
+            },
+            error:function(){
+                alert("err");
+            }
+        });
+    }
+
+</script>
+
+<div class="container" style="margin-top: 40px;">
+
+    <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label" style="text-align: right">发票类型</label>
+            <div class="col-sm-9">
+
+                <select id="fplx" name="fplx" class="selectpicker show-tick form-control" data-size="8">
+                    <option value="01">01-增值税专用发票</option>
+                    <option value="02">02-货物运输专用发票</option>
+                    <option value="03">03-机动车统一销售发票</option>
+                    <option value="04">04-增值税普通发票</option>
+                    <option value="10">10-增值税普通发票（电子发票）</option>
+                    <option value="11">11-增值税普通发票（卷式发票）</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发票代码</label>
+            <div class="col-sm-9">
+                <input id="fpdm" name="fpdm" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发票号码</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input id="fphm" name="fphm" type="text" class="form-control">
+                 <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary" onclick="startMon();return false;" >   反查位置</button>
+              </span>
+                </div>
+            </div>
+        </div>
+
+        <div  class="col-sm-12">
+            <hr  width="100%" color=#987cb9 size=3>
+        </div>
+
+    </form>
+
+    <!--===============================================================分割线===============================================================-->
+
+    <div id="pdiv" class="row">
+        {{.server}}
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-9">
+            <div >
+                <h5><em>查询记录</em></h5>
+            </div>
+
+            <div >
+                <table id="history" class="table table-hover table-bordered table-striped">
+                    <thead>
+                    <tr class="info">
+                        <th style="width: 10%">time</th>
+                        <th style="width: 20%">发票类型</th>
+                        <th style="width: 20%">发票代码</th>
+                        <th style="width: 20%">发票号码</th>
+                        <th style="width: 30%">位于</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="info">
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

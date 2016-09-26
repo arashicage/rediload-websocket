@@ -1,0 +1,84 @@
+<script>
+	$(document).ready(function() {
+		$('#bthSave').on("click", function() {
+
+			var redisURLS = $('#redisURLS').val();
+			var levelURLS = $('#levelURLS').val();
+			// var cron = $('#cron').val();
+
+			$.ajax({
+				url: '/save?' + "redisURLS=" + redisURLS + "&" + "levelURLS=" + levelURLS ,/*+ "&" + "cron=" + cron,*/
+				async: true,
+				dataType: 'json',
+				type: 'GET',
+				contentType: "application/json; charset=utf8",
+				success: function(data) {
+					console.log(data)
+					$('#warn').css('display', 'block');
+					$('#alert').html('保存成功');
+					$('#alert').css('display', 'block');
+					$('#warn').delay(1000).hide(0);
+					$('#alert').delay(1000).hide(0);
+				},
+				error: function() {
+					$('#warn').css('display', 'block');
+					$('#alert').html('保存失败');
+					$('#alert').css('display', 'block');
+					// $('#warn').delay(1000).hide(0);
+					// $('#alert').delay(1000).hide(0);
+				}
+			});
+		});
+	});
+
+</script>
+
+<div class="container" style="margin-top: 40px;">
+
+	<form class="form-horizontal" role="form" ><!-- method="GET" action="/save"> -->			
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Redis URLs</label>
+
+			<div class="col-sm-10">
+				<textarea id="redisURLS" name="redisURLS" style="resize:vertical;" class="form-control" rows="8" placeholder="填写用于集群中redis实例地址,例如:127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381">{{.redis_urls}}</textarea>
+			</div>
+		</div>
+
+<!-- 		<div class="form-group">
+	<label class="col-sm-2 control-label">Mongo URL  <i class="fa fa-plus-square"></i></label>
+
+	<div class="col-sm-9">
+		<input id="mongoURL" name="mongoURL" class="form-control" rows="3" placeholder="填写用于存储key位置的mongodb 数据库地址,例如:127.0.0.1:27017" value={{.mongo_urls}}>
+	</div>
+	
+	<label class="col-sm-1 control-label"><i class="fa fa-plus-square"></i></label>
+	 
+</div> -->
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Leveldb PATH</i></label>
+
+			<div class="col-sm-10">
+				<input id="levelURLS" name="levelURLS" class="form-control" rows="3" placeholder="填写用于存储key位置的leveldb 路径,例如:data/db" value={{.level_urls}}>
+			</div>
+						 
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label"> &nbsp;</label>
+
+			<div class="col-sm-10">
+				<button id="bthSave" type="submit" class="btn btn-primary btn-sm" onclick="return false;">保存设置</button>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label id="warn" class="col-sm-2 control-label" style="display: none;"> &nbsp;</label>
+			<div class="col-sm-10">
+				<div id="alert" class="alert alert-danger" role="alert" style="display: none; width: 100%;"></div>
+			</div>
+		</div>
+
+	</form>
+</div>

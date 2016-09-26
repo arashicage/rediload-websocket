@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bootstrap-select test page</title>
+
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="1.6.5/css/bootstrap-select.css">
+
+  <style>
+    body {
+      padding-top: 70px;
+    }
+  </style>
+
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="1.6.5/js/bootstrap-select.js"></script>
+</head>
+<body>
+<!-- 代码片断 -->
+<form class="form-horizontal well" method="GET">
+<select name="type" class="selectpicker show-tick" data-size="5" value="<%=search.type||''%>">
+<option></option>
+<option>科幻</option>
+<option>剧情</option>
+<option>犯罪</option>
+<option>西部</option>
+<option>爱情</option>
+</select>
+</form>
+
+
+
+</body>
+</html>

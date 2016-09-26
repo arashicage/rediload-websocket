@@ -1,0 +1,104 @@
+<!--<div class="container" style="margin-top: 40px;">-->
+
+<div class="row">
+	<!-- Left col -->
+	<div class="col-md-8">
+
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">样例数据（取样100条）</h3>
+				<lable id="qrs_idx" class="col-sm-6" hidden="hidden">{{.qrs}}</lable>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<table id="example2" class="table table-bordered table-hover">
+
+					<thead>
+						<tr>
+							{{range $i,$v := .col}}
+							<td>{{$v}}</td>
+							{{end}}
+						</tr>
+					</thead>
+
+					<tbody>
+						{{range .data}}
+						<tr>
+							{{range $k,$v := .}}
+							<td>{{$v}}</td>
+							{{end}}
+						</tr>
+						{{end}}
+
+					</tbody>
+
+					<thead>
+						<tr>
+							{{range $i,$v := .col}}
+							<td>{{$v}}</td>
+							{{end}}
+						</tr>
+					</thead>
+
+				</table>
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+
+	<div class="col-md-4">
+
+		<div class="box">
+			<div class="box-header">
+				<textarea id="qrtext" name="content" style="resize:vertical;overflow:auto; background-attachment:fixed;background-repeat:no-repeat;border-style:solid;border-color:#FFFFFF;font-family:lucida console;font-size:16px;" class="form-control" rows="3" style="margin-bottom: 3px;">
+				</textarea>
+
+				<img id="xxx" height="500" width="500" src="/qr?&data=长城计算机软件与系统有限公司" alt="">
+			</div>
+		</div>
+
+	</div>
+	<!-- /.col -->
+</div>
+
+<script>
+	$(document).ready(function() {
+		$('tbody tr').hover(function() {
+				var qrs = '';
+				var qrs_idx = $('#qrs_idx').text().split(',');
+
+				for (var i = 0; i < qrs_idx.length; i++) {
+					if (i == 0) {
+						qrs = qrs + $(this).children('td').eq(qrs_idx[i]).text();
+					} else {
+						qrs = qrs + ',' + $(this).children('td').eq(qrs_idx[i]).text();
+					}
+				}
+				console.log(qrs);
+
+				$(this).addClass("success");
+				$('#xxx').attr("src", "/qr?&data=" + qrs).removeClass('hidden');
+				$('#qrtext').text(qrs);
+			},
+			function() {
+				$(this).removeClass("success");
+				$('#qrtext').text();
+			});
+	});
+
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		$('#example2').dataTable({
+			"bPaginate": true,
+			"bLengthChange": false,
+			"bFilter": true,
+			"bSort": false,
+			"bInfo": true,
+			"bAutoWidth": false
+		});
+	});
+
+</script>
